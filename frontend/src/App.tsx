@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell, LineChart, Line, Legend 
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, LineChart, Line, Legend
 } from 'recharts';
-import { 
-  Users, TrendingUp, DollarSign, AlertTriangle, 
-  ArrowRight, Upload, Search, ShieldCheck, Zap, 
+import {
+  Users, TrendingUp, DollarSign, AlertTriangle,
+  ArrowRight, Upload, Search, ShieldCheck, Zap,
   ChevronRight, Info, BarChart3, PieChart as PieChartIcon,
   LayoutDashboard, UserPlus, FileText
 } from 'lucide-react';
@@ -21,15 +21,15 @@ const SidebarItem = ({ icon: Icon, label, active, onClick }: { icon: any, label:
     onClick={onClick}
     className={cn(
       "flex items-center gap-3 w-full px-4 py-3 text-sm font-bold transition-all rounded-xl relative group",
-      active 
-        ? "bg-brand text-white shadow-xl shadow-brand/30" 
+      active
+        ? "bg-brand text-white shadow-xl shadow-brand/30"
         : "text-white/40 hover:text-white hover:bg-white/5"
     )}
   >
     <Icon size={18} className={cn("transition-transform group-hover:scale-110", active ? "text-white" : "text-white/40")} />
     {label}
     {active && (
-      <motion.div 
+      <motion.div
         layoutId="active-pill"
         className="absolute -left-2 w-1 h-6 bg-white rounded-full"
       />
@@ -91,7 +91,7 @@ const StrategyCard = ({ probability, importance }: { probability: number, import
   const Icon = strategy.icon;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn("p-10 rounded-[2rem] border-2 shadow-2xl relative overflow-hidden", strategy.color)}
@@ -99,7 +99,7 @@ const StrategyCard = ({ probability, importance }: { probability: number, import
       {probability >= 70 && (
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand/10 blur-[100px] -mr-32 -mt-32" />
       )}
-      
+
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-10">
           <div className="flex items-center gap-5">
@@ -122,7 +122,7 @@ const StrategyCard = ({ probability, importance }: { probability: number, import
         </div>
 
         <p className="mb-10 text-xl font-medium opacity-80 leading-relaxed max-w-2xl">{strategy.description}</p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {strategy.actions.map((action, i) => (
             <div key={i} className={cn(
@@ -137,7 +137,7 @@ const StrategyCard = ({ probability, importance }: { probability: number, import
           ))}
         </div>
 
-        <div className={cn("mt-12 pt-10 border-t flex flex-wrap items-center justify-between gap-6", 
+        <div className={cn("mt-12 pt-10 border-t flex flex-wrap items-center justify-between gap-6",
           probability >= 70 ? "border-white/10" : "border-gray-light")}>
           <div className="flex items-center gap-4">
             <span className="label-micro opacity-50">Key Drivers:</span>
@@ -170,7 +170,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'predict' | 'explain'>('dashboard');
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   // Prediction State
   const [formData, setFormData] = useState<CustomerData>({
     recency: 15,
@@ -243,23 +243,23 @@ export default function App() {
         </div>
 
         <nav className="flex flex-col gap-3 flex-1">
-          <SidebarItem 
-            icon={LayoutDashboard} 
-            label="대시보드 개요" 
-            active={activeTab === 'dashboard'} 
-            onClick={() => setActiveTab('dashboard')} 
+          <SidebarItem
+            icon={LayoutDashboard}
+            label="대시보드 개요"
+            active={activeTab === 'dashboard'}
+            onClick={() => setActiveTab('dashboard')}
           />
-          <SidebarItem 
-            icon={UserPlus} 
-            label="이탈 예측 실행" 
-            active={activeTab === 'predict'} 
-            onClick={() => setActiveTab('predict')} 
+          <SidebarItem
+            icon={UserPlus}
+            label="이탈 예측 실행"
+            active={activeTab === 'predict'}
+            onClick={() => setActiveTab('predict')}
           />
-          <SidebarItem 
-            icon={FileText} 
-            label="모델 분석 리포트" 
-            active={activeTab === 'explain'} 
-            onClick={() => setActiveTab('explain')} 
+          <SidebarItem
+            icon={FileText}
+            label="모델 분석 리포트"
+            active={activeTab === 'explain'}
+            onClick={() => setActiveTab('explain')}
           />
         </nav>
 
@@ -293,11 +293,11 @@ export default function App() {
               <div className="h-px w-12 bg-gray-light" />
             </div>
             <h2 className="text-6xl font-black text-dark tracking-tighter leading-none">
-              {activeTab === 'dashboard' ? '유지 전략 대시보드' : 
+              {activeTab === 'dashboard' ? '유지 전략 대시보드' :
                activeTab === 'predict' ? '고객 이탈 예측' : '모델 설명성 보고서'}
             </h2>
             <p className="text-dark/40 mt-6 font-medium max-w-2xl text-lg leading-relaxed">
-              {activeTab === 'dashboard' ? '고객 행동 패턴을 실시간으로 분석하여 비즈니스 성장을 위한 핵심 인사이트를 제공합니다.' : 
+              {activeTab === 'dashboard' ? '고객 행동 패턴을 실시간으로 분석하여 비즈니스 성장을 위한 핵심 인사이트를 제공합니다.' :
                activeTab === 'predict' ? '머신러닝 엔진이 개별 고객의 이탈 가능성을 정밀하게 계산하고 최적의 유지 전략을 도출합니다.' : '예측 모델의 투명성을 확보하기 위해 주요 변수별 영향력과 판단 근거를 상세히 분석합니다.'}
             </p>
           </div>
@@ -312,7 +312,7 @@ export default function App() {
 
         <AnimatePresence mode="wait">
           {activeTab === 'dashboard' && (
-            <motion.div 
+            <motion.div
               key="dashboard"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -354,13 +354,13 @@ export default function App() {
                           dataKey="count"
                         >
                           {stats?.churnDistribution?.map((entry, index) => (
-                            <Cell 
-                              key={`cell-${index}`} 
-                              fill={index === 0 ? '#10b981' : index === 4 ? '#FD3706' : index === 3 ? '#f97316' : index === 2 ? '#222026' : '#DBDBDB'} 
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={index === 0 ? '#10b981' : index === 4 ? '#FD3706' : index === 3 ? '#f97316' : index === 2 ? '#222026' : '#DBDBDB'}
                             />
                           ))}
                         </Pie>
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)', fontWeight: 800 }}
                         />
                       </PieChart>
@@ -382,7 +382,7 @@ export default function App() {
                         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#E5E7EB" />
                         <XAxis type="number" hide />
                         <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#222026', fontWeight: 700 }} width={100} />
-                        <Tooltip 
+                        <Tooltip
                            cursor={{ fill: '#F3F4F6' }}
                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 700 }}
                         />
@@ -396,7 +396,7 @@ export default function App() {
           )}
 
           {activeTab === 'predict' && (
-            <motion.div 
+            <motion.div
               key="predict"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -414,13 +414,13 @@ export default function App() {
                       <input type="file" className="hidden" accept=".csv" onChange={handleFileUpload} />
                     </label>
                   </div>
-                  
+
                   <form onSubmit={handlePredict} className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="label-micro block">최근 구매일 (Recency)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={formData.recency}
                           onChange={e => setFormData({...formData, recency: parseInt(e.target.value)})}
                           className="w-full px-4 py-4 bg-white border-2 border-gray-light rounded-2xl focus:border-brand outline-none transition-all font-mono font-bold text-dark"
@@ -428,8 +428,8 @@ export default function App() {
                       </div>
                       <div className="space-y-2">
                         <label className="label-micro block">구매 빈도 (Frequency)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={formData.frequency}
                           onChange={e => setFormData({...formData, frequency: parseInt(e.target.value)})}
                           className="w-full px-4 py-4 bg-white border-2 border-gray-light rounded-2xl focus:border-brand outline-none transition-all font-mono font-bold text-dark"
@@ -439,8 +439,8 @@ export default function App() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="label-micro block">누적 구매액 (Monetary)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={formData.monetary}
                           onChange={e => setFormData({...formData, monetary: parseInt(e.target.value)})}
                           className="w-full px-4 py-4 bg-white border-2 border-gray-light rounded-2xl focus:border-brand outline-none transition-all font-mono font-bold text-dark"
@@ -448,16 +448,16 @@ export default function App() {
                       </div>
                       <div className="space-y-2">
                         <label className="label-micro block">가입 기간 (Tenure)</label>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={formData.tenure}
                           onChange={e => setFormData({...formData, tenure: parseInt(e.target.value)})}
                           className="w-full px-4 py-4 bg-white border-2 border-gray-light rounded-2xl focus:border-brand outline-none transition-all font-mono font-bold text-dark"
                         />
                       </div>
                     </div>
-                    
-                    <button 
+
+                    <button
                       type="submit"
                       disabled={predicting}
                       className="btn-primary w-full flex items-center justify-center gap-3 disabled:opacity-50"
@@ -513,7 +513,7 @@ export default function App() {
                               strokeDashoffset={452.4 - (452.4 * prediction.churnProbability) / 100}
                               className={cn(
                                 "transition-all duration-1000 ease-out",
-                                prediction.churnProbability >= 70 ? "text-brand" : 
+                                prediction.churnProbability >= 70 ? "text-brand" :
                                 prediction.churnProbability >= 40 ? "text-orange-500" : "text-emerald-500"
                               )}
                             />
@@ -545,7 +545,7 @@ export default function App() {
                                 <span className="text-dark">{m.val}%</span>
                               </div>
                               <div className="w-full bg-gray-light h-2 rounded-full overflow-hidden">
-                                <motion.div 
+                                <motion.div
                                   initial={{ width: 0 }}
                                   animate={{ width: `${m.val}%` }}
                                   className="bg-dark h-full"
@@ -569,7 +569,7 @@ export default function App() {
                           <div key={i} className="flex items-center gap-6">
                             <span className="text-xs font-black text-dark w-36 shrink-0">{imp.feature}</span>
                             <div className="flex-1 bg-gray-light h-10 rounded-xl relative overflow-hidden">
-                              <motion.div 
+                              <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${imp.impact * 100}%` }}
                                 className="bg-brand h-full opacity-90"
@@ -599,7 +599,7 @@ export default function App() {
           )}
 
           {activeTab === 'explain' && (
-            <motion.div 
+            <motion.div
               key="explain"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -625,13 +625,13 @@ export default function App() {
                       </div>
                     ))}
                   </div>
-                  
+
                   <div className="mt-12">
                     <h4 className="label-micro mb-6">정밀도-재현율 곡선 (Precision-Recall Curve)</h4>
                     <div className="h-72 bg-[#F9F9F9] rounded-[2rem] border border-gray-light p-8">
                        <ResponsiveContainer width="100%" height="100%">
                          <LineChart data={[
-                           { r: 0, p: 1 }, { r: 0.2, p: 0.98 }, { r: 0.4, p: 0.95 }, 
+                           { r: 0, p: 1 }, { r: 0.2, p: 0.98 }, { r: 0.4, p: 0.95 },
                            { r: 0.6, p: 0.88 }, { r: 0.8, p: 0.75 }, { r: 1, p: 0.4 }
                          ]}>
                            <CartesianGrid strokeDasharray="3 3" stroke="#DBDBDB" />
