@@ -6,3 +6,18 @@ coverage/
 *.log
 .env*
 !.env.example
+backend/notebooks/mlruns/
+
+# =========================
+# Backend (FastAPI, Python)
+# =========================
+backend/.env
+backend/__pycache__/
+backend/venv/
+*.pyc
+
+# =========================
+# Frontend (React)
+# =========================
+frontend/node_modules/
+frontend/.env
