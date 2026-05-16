@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import requests
 
 @st.cache_resource
 def load_artifacts():
@@ -44,7 +45,15 @@ with st.sidebar:
     marital_status = st.selectbox("결혼 여부", encoders['MaritalStatus'].classes_)
     prefered_order_cat = st.selectbox("선호 주문 카테고리", encoders['PreferedOrderCat'].classes_)
 
+if "analyzed" not in st.session_state:
+    st.session_state.analyzed = False
+
 if st.sidebar.button("이탈 위험도 분석 실행"):
+    st.session_state.analyzed = True
+    if "ai_action" in st.session_state:
+        del st.session_state.ai_action
+
+if st.session_state.analyzed:
 
     input_df = pd.DataFrame(columns=model_features)
 
@@ -91,12 +100,42 @@ if st.sidebar.button("이탈 위험도 분석 실행"):
         if is_churn == 1:
             if complain == 1:
                 st.warning("📍 **불만 고객 집중 케어**: 고객 불만이 접수된 상태입니다. 즉시 해피콜을 실시하고 보상 쿠폰(Cashback) 지급을 검토하세요.")
-            if tenure < 5:
+            elif tenure < 5:
                 st.warning("📍 **신규 고객 이탈 방지**: 가입 초기 고객의 이탈 징후입니다. 서비스 사용 가이드를 제공하고 리텐션 이벤트를 진행하세요.")
-            if day_since_last_order > 20:
+            elif day_since_last_order > 20:
                 st.info("📍 **재구매 유도**: 주문 공백기가 길어지고 있습니다. 장바구니 상품 할인 알림이나 개인화 큐레이션 메일을 발송하세요.")
+            else:
+                st.warning("📍 **이탈 징후 포착**: 특별 프로모션 알림을 발송하세요.")
         else:
             st.info("📍 **로열티 강화**: 현재 서비스에 만족하고 있는 고객입니다. 친구 초대 포인트나 신규 카테고리 교차 판매(Cross-selling)를 시도하세요.")
+            
+        st.divider()
+        st.subheader("🤖 AI 맞춤형 마케팅 전략")
+        if st.button("✨ 전략 생성하기"):
+            with st.spinner("AI가 고객 맞춤형 전략을 고민 중입니다..."):
+                prompt = f"""
+You are an expert e-commerce business consultant. From the perspective of a CEO, provide ONE short, specific, and highly effective marketing solution in Korean to prevent this customer from churning. Do not include any English in the response.
+[Data]
+Tenure: {tenure} months
+Days since last order: {day_since_last_order}
+Complain: {'Yes' if complain == 1 else 'No'}
+Satisfaction: {satisfaction_score}/5
+Churn Probability: {churn_proba * 100:.1f}%
+
+Korean Marketing Action:"""
+                try:
+                    response = requests.post('http://localhost:11434/api/generate', 
+                                             json={'model': 'gemma:2b', 'prompt': prompt, 'stream': False},
+                                             timeout=180)
+                    if response.status_code == 200:
+                        st.session_state.ai_action = response.json().get('response', '').strip()
+                    else:
+                        st.error("Ollama API 호출에 실패했습니다.")
+                except Exception as e:
+                    st.error(f"Ollama 서버에 연결할 수 없습니다. ({e})")
+                    
+        if "ai_action" in st.session_state:
+            st.success(f"**AI 제안:** {st.session_state.ai_action}")
 
 else:
     st.info("왼쪽 사이드바에서 고객 데이터를 입력한 후 '이탈 위험도 분석 실행' 버튼을 눌러주세요.")
